@@ -203,33 +203,14 @@ def update_application_status_route(
     payload: ApplicationStatusUpdate,
     current_user: dict = Depends(require_role("client")),
 ) -> dict:
+    """PATCH endpoint for status updates (kept for compatibility)."""
     return _update_status(application_id, payload, current_user)
 
-# New withdrawal endpoint for freelancers
-@router.post(
-    "/{application_id}/withdraw",
-    response_model=ApplicationPublic,
-    summary="Freelancer withdraws a pending or shortlisted application",
-    description=(
-        "Only the owning freelancer may withdraw their own application. "
-        "Allowed when the application status is `pending` or `shortlisted`."
-    ),
-    responses={
-        200: {"description": "Application withdrawn successfully."},
-        401: {"description": "Authentication required."},
-        403: {"description": "You do not have permission to withdraw this application."},
-        404: {"description": "Application not found."},
-        409: {"description": "Withdrawal not allowed in the current state."},
-    },
-)
-def withdraw_application_route(
-    application_id: str,
-    current_user: dict = Depends(require_role("freelancer")),
-) -> dict:
-    try:
-        return withdraw_application(application_id, current_user)
-    except Exception as exc:
-        _raise_application_error(exc)
+
+
+
+
+
 
 
 @router.put(
@@ -242,10 +223,12 @@ def update_application_status_compat_route(
     payload: ApplicationStatusUpdate,
     current_user: dict = Depends(require_role("client")),
 ) -> dict:
-    """Compatibility alias for Frontend(2), which sends PUT for status."""
+    """Compatibility alias for Frontend(2), which sends PUT for status.
+    Delegates to the shared internal helper.
+    """
     return _update_status(application_id, payload, current_user)
 
-# New withdrawal endpoint for freelancers
+# Withdrawal endpoint for freelancers
 @router.post(
     "/{application_id}/withdraw",
     response_model=ApplicationPublic,
@@ -270,3 +253,7 @@ def withdraw_application_route(
         return withdraw_application(application_id, current_user)
     except Exception as exc:
         _raise_application_error(exc)
+
+
+
+

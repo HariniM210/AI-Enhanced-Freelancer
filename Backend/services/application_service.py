@@ -347,14 +347,19 @@ def list_my_applications(
             "You do not have permission to perform this action."
         )
 
-    collection = _collection("applications")
-    total = collection.count_documents(query)
-    cursor = (
-        collection.find(query)
-        .sort([("created_at", DESCENDING), ("_id", ASCENDING)])
-        .limit(limit)
-    )
-    return [public_application(application) for application in cursor], total
+    try:
+        collection = _collection("applications")
+        total = collection.count_documents(query)
+        cursor = (
+            collection.find(query)
+            .sort([("created_at", DESCENDING), ("_id", ASCENDING)])
+            .limit(limit)
+        )
+        return [public_application(application) for application in cursor], total
+    except Exception as exc:
+        # If the database is unreachable or any other DB error occurs, surface a 503.
+        from fastapi import HTTPException
+        raise HTTPException(status_code=503, detail="Database unavailable") from exc
 
 
 def list_project_applications(
