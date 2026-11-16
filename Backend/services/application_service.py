@@ -242,6 +242,7 @@ def public_application(
         "created_at": _iso_datetime(application.get("created_at")),
         "updated_at": _iso_datetime(application.get("updated_at")),
         "completed_at": _iso_datetime(application.get("completed_at")),
+        "withdrawn_at": _iso_datetime(application.get("withdrawn_at")),
     }
 
 
@@ -329,9 +330,10 @@ def list_my_applications(
 ) -> tuple[list[dict[str, Any]], int]:
     """List applications visible to the authenticated user.
 
-    Freelancers see the applications they submitted. Clients see applications
-    received on projects they own. The query is always scoped by the token, so
-    one account can never read another account's applications.
+    Freelancers see every application they submitted, including withdrawn
+    ones. Clients see applications received on projects they own, excluding
+    withdrawn applications from the active list. The query is always scoped
+    by the token, so one account can never read another account's applications.
     """
     user_id = _as_object_id(user.get("id", ""))
     if user_id is None:
@@ -341,7 +343,7 @@ def list_my_applications(
     if role == "freelancer":
         query = {"freelancer_id": user_id}
     elif role == "client":
-        query = {"client_id": user_id}
+        query = {"client_id": user_id, "status": {"$ne": "withdrawn"}}
     else:
         raise ApplicationPermissionError(
             "You do not have permission to perform this action."
@@ -381,7 +383,7 @@ def list_project_applications(
         )
 
     collection = _collection("applications")
-    query = {"project_id": object_id}
+    query = {"project_id": object_id, "status": {"$ne": "withdrawn"}}
     total = collection.count_documents(query)
     cursor = (
         collection.find(query)
@@ -622,8 +624,16 @@ def _complete_application(
 
 def withdraw_application(application_id: str, freelancer: dict) -> dict[str, Any]:
     """Freelancer withdraws their own pending or shortlisted application.
-    Only the owning freelancer may perform this action.
+
+    The application document is kept. A second withdrawal of the same
+    application returns the existing withdrawn record and does not change
+    ``withdrawn_at``.
     """
+    if freelancer.get("role") != "freelancer":
+        raise ApplicationPermissionError(
+            "You do not have permission to perform this action."
+        )
+
     object_id = _as_object_id(application_id)
     if object_id is None:
         raise ApplicationNotFoundError("Application not found.")
@@ -635,20 +645,40 @@ def withdraw_application(application_id: str, freelancer: dict) -> dict[str, Any
 
     freelancer_id = _as_object_id(freelancer.get("id", ""))
     if freelancer_id is None or application.get("freelancer_id") != freelancer_id:
-        raise ApplicationPermissionError("You do not have permission to perform this action.")
+        raise ApplicationPermissionError(
+            "You do not have permission to perform this action."
+        )
 
     current_status = str(application.get("status") or "pending")
+    if current_status == "withdrawn":
+        return public_application(application)
+
     if current_status not in ("pending", "shortlisted"):
-        raise ApplicationConflictError("Only pending or shortlisted applications can be withdrawn.")
+        raise ApplicationConflictError(
+            "Only pending or shortlisted applications can be withdrawn."
+        )
 
     now = datetime.now(timezone.utc)
     updated = applications.find_one_and_update(
-        {"_id": object_id, "status": current_status},
+        {
+            "_id": object_id,
+            "freelancer_id": freelancer_id,
+            "status": {"$in": ["pending", "shortlisted"]},
+        },
         {"$set": {"status": "withdrawn", "withdrawn_at": now, "updated_at": now}},
         return_document=ReturnDocument.AFTER,
     )
     if updated is None:
-        raise ApplicationConflictError("Application could not be withdrawn.")
+        latest = applications.find_one({"_id": object_id})
+        if (
+            latest is not None
+            and latest.get("freelancer_id") == freelancer_id
+            and str(latest.get("status") or "") == "withdrawn"
+        ):
+            return public_application(latest)
+        raise ApplicationConflictError(
+            "Only pending or shortlisted applications can be withdrawn."
+        )
     return public_application(updated)
 
 def update_application_status(
@@ -656,46 +686,6 @@ def update_application_status(
     payload: ApplicationStatusUpdate,
     client: dict[str, Any],
 ) -> dict[str, Any]:
-    """Shortlist, accept, or reject one application as the owning client.
-
-    Shortlisting only changes the application. Acceptance is the single-hire
-    transition. It moves the project to ``in_progress``, records ``hired_application_id``,
-    rejects every other pending and shortlisted applications, and refuses any later hire for the same project.
-    """
-    object_id = _as_object_id(application_id)
-    if object_id is None:
-        raise ApplicationNotFoundError("Application not found.")
-
-    applications = _collection("applications")
-    application = applications.find_one({"_id": object_id})
-    if application is None:
-        raise ApplicationNotFoundError("Application not found.")
-
-    client_id = _as_object_id(client.get("id", ""))
-    if client_id is None or application.get("client_id") != client_id:
-        raise ApplicationPermissionError(
-            "You do not have permission to perform this action."
-        )
-
-    current_status = str(application.get("status") or "pending")
-    requested_status = payload.status
-
-    if requested_status == "completed":
-        return _complete_application(application, client_id, current_status, rating=payload.rating, review=payload.review)
-
-    if current_status == requested_status:
-        # Repeating the same decision is harmless and keeps the UI simple.
-        return public_application(application)
-
-    if current_status not in ("pending", "shortlisted"):
-        raise ApplicationConflictError(
-            "This application has already been finalised."
-        )
-
-    now = datetime.now(timezone.utc)
-    # ... rest of the original logic follows unchanged ...
-
-
     """Shortlist, accept, or reject one application as the owning client.
 
     Shortlisting only changes the application. Acceptance is the single-hire
@@ -720,6 +710,11 @@ def update_application_status(
 
     current_status = str(application.get("status") or "pending")
     requested_status = payload.status
+
+    if current_status == "withdrawn" or requested_status == "withdrawn":
+        raise ApplicationConflictError(
+            "This application has been withdrawn and can no longer be updated."
+        )
 
     if requested_status == "completed":
         return _complete_application(application, client_id, current_status, rating=payload.rating, review=payload.review)

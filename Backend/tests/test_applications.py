@@ -1059,3 +1059,253 @@ def test_application_counts_remain_correct_after_status_changes(
         "applications_count"
     ] == 1
     assert domain_db.applications.count_documents({}) == 1
+
+
+def _withdraw(client, token: str, application_id: str):
+    return client.post(
+        f"/applications/{application_id}/withdraw",
+        headers=_headers(token),
+    )
+
+
+def test_freelancer_withdraws_pending_application(client, domain_db):
+    client_account = _register_client(client)
+    freelancer = _register_freelancer(client)
+    project = _create_project(client, client_account["access_token"])
+    application = _apply(client, freelancer["access_token"], project["id"])
+
+    response = _withdraw(client, freelancer["access_token"], application["id"])
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["id"] == application["id"]
+    assert body["status"] == "withdrawn"
+    assert body["withdrawn_at"]
+
+    stored = domain_db.applications.find_one({"_id": ObjectId(application["id"])})
+    assert stored is not None
+    assert stored["status"] == "withdrawn"
+    assert isinstance(stored["withdrawn_at"], datetime)
+    assert stored["withdrawn_at"].tzinfo is not None
+    assert stored["withdrawn_at"].utcoffset().total_seconds() == 0
+    assert domain_db.applications.count_documents({}) == 1
+
+
+def test_freelancer_withdraws_shortlisted_application(client, domain_db):
+    client_account = _register_client(client)
+    freelancer = _register_freelancer(client)
+    project = _create_project(client, client_account["access_token"])
+    application = _apply(client, freelancer["access_token"], project["id"])
+    shortlisted = client.patch(
+        f"/applications/{application['id']}/status",
+        json={"status": "shortlisted"},
+        headers=_headers(client_account["access_token"]),
+    )
+    assert shortlisted.status_code == 200
+
+    response = _withdraw(client, freelancer["access_token"], application["id"])
+    assert response.status_code == 200, response.text
+    assert response.json()["status"] == "withdrawn"
+    stored = domain_db.applications.find_one({"_id": ObjectId(application["id"])})
+    assert stored["status"] == "withdrawn"
+    assert stored["withdrawn_at"] is not None
+
+
+def test_freelancer_cannot_withdraw_another_users_application(client, domain_db):
+    client_account = _register_client(client)
+    owner = _register_freelancer(client, email="owner@example.com")
+    other = _register_freelancer(
+        client, email="other@example.com", name="Other Freelancer"
+    )
+    project = _create_project(client, client_account["access_token"])
+    application = _apply(client, owner["access_token"], project["id"])
+
+    response = _withdraw(client, other["access_token"], application["id"])
+    assert response.status_code == 403
+    stored = domain_db.applications.find_one({"_id": ObjectId(application["id"])})
+    assert stored["status"] == "pending"
+    assert stored.get("withdrawn_at") is None
+
+
+def test_client_cannot_withdraw_an_application(client, domain_db):
+    client_account = _register_client(client)
+    freelancer = _register_freelancer(client)
+    project = _create_project(client, client_account["access_token"])
+    application = _apply(client, freelancer["access_token"], project["id"])
+
+    anonymous = client.post(f"/applications/{application['id']}/withdraw")
+    assert anonymous.status_code == 401
+
+    response = _withdraw(client, client_account["access_token"], application["id"])
+    assert response.status_code == 403
+    stored = domain_db.applications.find_one({"_id": ObjectId(application["id"])})
+    assert stored["status"] == "pending"
+
+
+@pytest.mark.parametrize("final_status", ["accepted", "rejected", "completed"])
+def test_freelancer_cannot_withdraw_finalised_application(
+    client, domain_db, final_status
+):
+    client_account = _register_client(client)
+    freelancer = _register_freelancer(client)
+    project = _create_project(client, client_account["access_token"])
+    application = _apply(client, freelancer["access_token"], project["id"])
+
+    if final_status == "rejected":
+        decided = client.patch(
+            f"/applications/{application['id']}/status",
+            json={"status": "rejected"},
+            headers=_headers(client_account["access_token"]),
+        )
+        assert decided.status_code == 200
+    else:
+        hired = client.patch(
+            f"/applications/{application['id']}/status",
+            json={"status": "accepted"},
+            headers=_headers(client_account["access_token"]),
+        )
+        assert hired.status_code == 200
+        if final_status == "completed":
+            completed = client.patch(
+                f"/applications/{application['id']}/status",
+                json={
+                    "status": "completed",
+                    "rating": 5,
+                    "review": "Delivered on time.",
+                },
+                headers=_headers(client_account["access_token"]),
+            )
+            assert completed.status_code == 200, completed.text
+            assert completed.json()["rating"] == 5
+            assert completed.json()["review"] == "Delivered on time."
+
+    response = _withdraw(client, freelancer["access_token"], application["id"])
+    assert response.status_code == 409
+    stored = domain_db.applications.find_one({"_id": ObjectId(application["id"])})
+    assert stored["status"] == final_status
+    assert stored.get("withdrawn_at") is None
+
+
+def test_repeated_withdrawal_is_safe(client, domain_db):
+    client_account = _register_client(client)
+    freelancer = _register_freelancer(client)
+    project = _create_project(client, client_account["access_token"])
+    application = _apply(client, freelancer["access_token"], project["id"])
+
+    first = _withdraw(client, freelancer["access_token"], application["id"])
+    assert first.status_code == 200, first.text
+    second = _withdraw(client, freelancer["access_token"], application["id"])
+    assert second.status_code == 200, second.text
+    assert second.json()["status"] == "withdrawn"
+    assert second.json()["withdrawn_at"] == first.json()["withdrawn_at"]
+    assert domain_db.applications.count_documents({"status": "withdrawn"}) == 1
+
+
+def test_withdrawn_application_stays_in_freelancer_history_only(client, domain_db):
+    client_account = _register_client(client)
+    freelancer = _register_freelancer(client)
+    project = _create_project(client, client_account["access_token"])
+    application = _apply(client, freelancer["access_token"], project["id"])
+    assert client.get(f"/projects/{project['id']}").json()["applications_count"] == 1
+
+    withdrawn = _withdraw(client, freelancer["access_token"], application["id"])
+    assert withdrawn.status_code == 200
+
+    mine = client.get(
+        "/applications/my", headers=_headers(freelancer["access_token"])
+    )
+    assert mine.status_code == 200
+    assert [item["id"] for item in mine.json()["items"]] == [application["id"]]
+    assert mine.json()["items"][0]["status"] == "withdrawn"
+    assert mine.json()["total"] == 1
+
+    client_list = client.get(
+        "/applications/my", headers=_headers(client_account["access_token"])
+    )
+    assert client_list.status_code == 200
+    assert client_list.json()["items"] == []
+    assert client_list.json()["total"] == 0
+
+    project_list = client.get(
+        f"/projects/{project['id']}/applications",
+        headers=_headers(client_account["access_token"]),
+    )
+    assert project_list.status_code == 200
+    assert project_list.json()["items"] == []
+    assert project_list.json()["total"] == 0
+    assert client.get(f"/projects/{project['id']}").json()["applications_count"] == 0
+    assert domain_db.applications.count_documents({}) == 1
+
+
+def test_client_cannot_shortlist_or_hire_withdrawn_application(client, domain_db):
+    client_account = _register_client(client)
+    freelancer = _register_freelancer(client)
+    project = _create_project(client, client_account["access_token"])
+    application = _apply(client, freelancer["access_token"], project["id"])
+    assert _withdraw(client, freelancer["access_token"], application["id"]).status_code == 200
+
+    for new_status in ("shortlisted", "accepted", "rejected", "completed"):
+        response = client.put(
+            f"/applications/{application['id']}/status",
+            json={"status": new_status},
+            headers=_headers(client_account["access_token"]),
+        )
+        assert response.status_code == 409, response.text
+        stored = domain_db.applications.find_one(
+            {"_id": ObjectId(application["id"])}
+        )
+        assert stored["status"] == "withdrawn"
+
+    invalid = client.put(
+        f"/applications/{application['id']}/status",
+        json={"status": "withdrawn"},
+        headers=_headers(client_account["access_token"]),
+    )
+    assert invalid.status_code == 422
+
+
+def test_existing_hire_reject_and_completion_still_work(client, domain_db):
+    client_account = _register_client(client)
+    hired = _register_freelancer(client, email="hired@example.com", name="Hired Dev")
+    declined = _register_freelancer(
+        client, email="declined@example.com", name="Declined Dev"
+    )
+    project = _create_project(client, client_account["access_token"])
+    other_project = _create_project(
+        client, client_account["access_token"], title="Separate open project"
+    )
+    hired_app = _apply(client, hired["access_token"], project["id"])
+    declined_app = _apply(client, declined["access_token"], project["id"])
+    withdrawn_app = _apply(client, hired["access_token"], other_project["id"])
+    assert _withdraw(
+        client, hired["access_token"], withdrawn_app["id"]
+    ).status_code == 200
+
+    accepted = client.patch(
+        f"/applications/{hired_app['id']}/status",
+        json={"status": "accepted"},
+        headers=_headers(client_account["access_token"]),
+    )
+    assert accepted.status_code == 200, accepted.text
+    assert accepted.json()["status"] == "accepted"
+
+    stored_declined = domain_db.applications.find_one(
+        {"_id": ObjectId(declined_app["id"])}
+    )
+    assert stored_declined["status"] == "rejected"
+
+    completed = client.patch(
+        f"/applications/{hired_app['id']}/status",
+        json={"status": "completed", "rating": 4, "review": "Solid delivery."},
+        headers=_headers(client_account["access_token"]),
+    )
+    assert completed.status_code == 200, completed.text
+    assert completed.json()["status"] == "completed"
+    assert completed.json()["rating"] == 4
+    assert completed.json()["review"] == "Solid delivery."
+    assert completed.json()["project"]["status"] == "completed"
+
+    stored_withdrawn = domain_db.applications.find_one(
+        {"_id": ObjectId(withdrawn_app["id"])}
+    )
+    assert stored_withdrawn["status"] == "withdrawn"
+    assert domain_db.applications.count_documents({}) == 3

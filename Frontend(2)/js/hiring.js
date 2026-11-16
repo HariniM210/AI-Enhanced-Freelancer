@@ -37,13 +37,12 @@
         var extra = { rating: rating };
         if (review) extra.review = review;
         UI.busy(ok, Api.applications.updateStatus(a.id, "completed", extra).then(function (updated) {
-      UI.busy(ok, Api.applications.updateStatus(a.id, "completed").then(function (updated) {
-        Object.assign(a, updated || {});
-        a.status = "completed";
-        m.close();
-        UI.toast("Project marked as completed.", "success");
-        render();
-      })).catch(function (e) { UI.toast(e.isNetwork ? "Can't reach the server. Nothing was saved." : e.message, "error"); });
+          Object.assign(a, updated || {});
+          a.status = "completed";
+          m.close();
+          UI.toast("Project marked as completed.", "success");
+          render();
+        })).catch(function (e) { UI.toast(e.isNetwork ? "Can't reach the server. Nothing was saved." : e.message, "error"); });
     });
   }
 

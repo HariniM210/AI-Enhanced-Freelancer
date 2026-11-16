@@ -1,10 +1,10 @@
-/* My applications: GET /applications/my, PUT /applications/{id}/status (withdraw) */
+/* My applications: GET /applications/my, POST /applications/{id}/withdraw */
 (function () {
   "use strict";
   var UI = window.UI, Api = window.Api, Data = window.Data, user = UI.Auth.user();
   var $ = function (i) { return document.getElementById(i); };
-  var apps = [], tab = "all";
-  var TABS = [["all", "All"], ["pending", "Pending"], ["shortlisted", "Shortlisted"], ["accepted", "Hired"], ["rejected", "Declined"], ["completed", "Completed"]];
+  var apps = [], tab = "all", withdrawing = {};
+  var TABS = [["all", "All"], ["pending", "Pending"], ["shortlisted", "Shortlisted"], ["accepted", "Hired"], ["rejected", "Declined"], ["withdrawn", "Withdrawn"], ["completed", "Completed"]];
 
   function render() {
     var by = Data.byStatus(apps), q = $("q").value.trim().toLowerCase();
@@ -27,14 +27,36 @@
     host.querySelectorAll("[data-view]").forEach(function (b) { b.addEventListener("click", function () {
       var a = list[+b.dataset.view]; UI.modal({ title: "Your proposal — " + Data.appProject(a).title, wide: true, body: '<div class="prose" style="max-height:50vh;overflow:auto">' + UI.esc(a.cover_letter || a.proposal || "No proposal text was returned.") + "</div>" });
     }); });
-    /*
-
-      // var a = list[+b.dataset.withdraw];
-      UI.confirm({ title: "Withdraw application?", body: "The client will no longer see your proposal for <b>" + UI.esc(Data.appProject(a).title) + "</b>.", confirm: "Withdraw", danger: true }).then(function (ok) {
-        if (!ok) return;
-        UI.busy(b, Api.applications.withdraw(a.id).then(function () { a.status = "withdrawn"; UI.toast("Application withdrawn.", "success"); render(); })).catch(function (e) { UI.toast(e.isNetwork ? "Can't reach the server. Nothing was changed." : e.message, "error"); });
+    host.querySelectorAll("[data-withdraw]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var a = list[+b.dataset.withdraw];
+        if (!a || withdrawing[a.id] || (a.status !== "pending" && a.status !== "shortlisted")) return;
+        withdrawing[a.id] = true;
+        b.disabled = true;
+        UI.confirm({
+          title: "Withdraw application?",
+          body: "Are you sure you want to withdraw your application? The client will no longer consider your application for this project.",
+          confirm: "Withdraw",
+          danger: true
+        }).then(function (ok) {
+          if (!ok) {
+            withdrawing[a.id] = false;
+            if (b.isConnected) b.disabled = false;
+            return;
+          }
+          var request = Api.applications.withdraw(a.id).then(function (updated) {
+            a.status = (updated && updated.status) || "withdrawn";
+            if (updated && updated.withdrawn_at) a.withdrawn_at = updated.withdrawn_at;
+            if (tab !== "all" && tab !== "withdrawn") tab = "all";
+            UI.toast("Application withdrawn successfully", "success");
+            render();
+          }, function (e) {
+            UI.toast((e && e.message) || "Application could not be withdrawn.", "error");
+          });
+          UI.busy(b, request.finally(function () { withdrawing[a.id] = false; }));
+        });
       });
-    }); });
+    });
   }
 
   function load() {

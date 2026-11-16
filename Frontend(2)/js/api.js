@@ -139,13 +139,14 @@
       list: function (query) { return request("GET", "/projects", { query: query }); },
       get: function (id) { return request("GET", "/projects/" + encodeURIComponent(id)); }
     },
-    withdraw: function (id) {
-      return request("POST", "/applications/" + encodeURIComponent(id) + "/withdraw", {});
-    },
+    applications: {
       create: function (payload) { return request("POST", "/applications", { body: payload }); },
       mine: function (query) { return request("GET", "/applications/my", { query: query }); },
+      withdraw: function (id) {
+        return request("POST", "/applications/" + encodeURIComponent(id) + "/withdraw");
+      },
       updateStatus: function (id, status, extra) {
-        return request("PATCH", "/applications/" + encodeURIComponent(id) + "/status", { body: Object.assign({ status: status }, extra || {}) });
+        return request("PUT", "/applications/" + encodeURIComponent(id) + "/status", { body: Object.assign({ status: status }, extra || {}) });
       }
     },
     ml: {

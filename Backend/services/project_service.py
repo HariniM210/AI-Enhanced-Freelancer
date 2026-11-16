@@ -123,12 +123,17 @@ def create_project(
 
 
 def _application_counts(project_ids: list[ObjectId]) -> dict[ObjectId, int]:
-    """Count applications for a page of projects in one aggregation."""
+    """Count active applications, excluding withdrawn records."""
     if not project_ids:
         return {}
 
     pipeline = [
-        {"$match": {"project_id": {"$in": project_ids}}},
+        {
+            "$match": {
+                "project_id": {"$in": project_ids},
+                "status": {"$ne": "withdrawn"},
+            }
+        },
         {"$group": {"_id": "$project_id", "count": {"$sum": 1}}},
     ]
     return {
@@ -192,6 +197,6 @@ def get_project(project_id: str) -> Optional[dict[str, Any]]:
         return None
 
     count = _collection("applications").count_documents(
-        {"project_id": object_id}
+        {"project_id": object_id, "status": {"$ne": "withdrawn"}}
     )
     return public_project(project, count)

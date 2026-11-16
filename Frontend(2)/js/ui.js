@@ -85,7 +85,15 @@
       '<div class="modal-body">' + (opts.body || "") + "</div>" + (opts.footer ? '<div class="modal-foot">' + opts.footer + "</div>" : "") + "</div>";
     document.body.appendChild(ov);
     var prev = document.activeElement;
-    function close() { document.removeEventListener("keydown", onKey); ov.remove(); if (prev && prev.focus) prev.focus(); }
+    var closed = false;
+    function close() {
+      if (closed) return;
+      closed = true;
+      document.removeEventListener("keydown", onKey);
+      ov.remove();
+      if (prev && prev.focus) prev.focus();
+      if (typeof opts.onClose === "function") opts.onClose();
+    }
     function onKey(e) { if (e.key === "Escape") close(); }
     document.addEventListener("keydown", onKey);
     ov.addEventListener("click", function (e) { if (e.target === ov || e.target.closest("[data-close]")) close(); });
@@ -95,13 +103,24 @@
   }
   function confirmDialog(o) {
     return new Promise(function (resolve) {
+      var confirmed = false;
+      var settled = false;
+      function finish() {
+        if (settled) return;
+        settled = true;
+        resolve(confirmed);
+      }
       var m = modal({
-        title: o.title, body: '<p class="text-2">' + o.body + "</p>",
-        footer: '<button class="btn btn-secondary" data-close>Cancel</button><button class="btn ' + (o.danger ? "btn-danger" : "btn-primary") + '" data-ok>' + esc(o.confirm || "Confirm") + "</button>"
+        title: o.title, body: '<p class="text-2">' + esc(o.body || "") + "</p>",
+        footer: '<button class="btn btn-secondary" data-close>Cancel</button><button class="btn ' + (o.danger ? "btn-danger" : "btn-primary") + '" data-ok>' + esc(o.confirm || "Confirm") + "</button>",
+        onClose: finish
       });
-      var done = false;
-      m.el.querySelector("[data-ok]").addEventListener("click", function () { done = true; m.close(); resolve(true); });
-      m.el.addEventListener("click", function (e) { if (!done && (e.target === m.el || e.target.closest("[data-close]"))) resolve(false); });
+      m.el.querySelector("[data-ok]").addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        confirmed = true;
+        m.close();
+      });
     });
   }
 

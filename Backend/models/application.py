@@ -205,8 +205,8 @@ class ApplicationPublic(BaseModel):
     status: str = Field(
         description=(
             "Applications start as pending and may move to shortlisted, "
-            "accepted, rejected, or completed. Rating and review remain "
-            "reserved for a later phase."
+            "accepted, rejected, withdrawn, or completed. Withdrawal is "
+            "available only through the dedicated withdraw endpoint."
         )
     )
     rating: Optional[int] = None
@@ -214,6 +214,7 @@ class ApplicationPublic(BaseModel):
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
     completed_at: Optional[str] = None
+    withdrawn_at: Optional[str] = None
 
 
 class ApplicationListResponse(BaseModel):

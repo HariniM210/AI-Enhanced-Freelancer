@@ -9,7 +9,8 @@
   function load() {
     UI.showLoading($("list"), "list", 3);
     Promise.all([Api.projects.list({ mine: "true", limit: 100 }), Api.applications.mine({ limit: 500 })]).then(function (r) {
-      projects = Api.asList(r[0]).items; apps = Api.asList(r[1]).items;
+      projects = Api.asList(r[0]).items;
+      apps = Api.asList(r[1]).items.filter(function (a) { return a.status !== "withdrawn"; });
       if (!projectId && projects.length) projectId = projects[0].id;
       $("projectSel").innerHTML = '<option value="">All projects</option>' + projects.map(function (p) { return '<option value="' + UI.esc(p.id) + '">' + UI.esc(p.title) + "</option>"; }).join("");
       $("projectSel").value = projectId;
@@ -46,12 +47,14 @@
 
   function actions(a, i) {
     var b = function (act, label, cls, ic) { return '<button class="btn ' + cls + ' btn-sm" data-act="' + act + '" data-i="' + i + '">' + UI.icon(ic, 14) + label + "</button>"; };
+    if (a.status === "withdrawn") return "";
     if (a.status === "pending") return b("accepted", "Hire", "btn-primary", "user-check") + b("shortlisted", "Shortlist", "btn-secondary", "list-checks") + b("rejected", "Decline", "btn-danger", "user-x");
     if (a.status === "shortlisted") return b("accepted", "Hire", "btn-primary", "user-check") + b("rejected", "Decline", "btn-danger", "user-x");
     if (a.status === "accepted") return '<a class="btn btn-secondary btn-sm" href="hiring.html">' + UI.icon("handshake", 14) + "Hiring &amp; tracking</a>";
     return "";
   }
   function act(a, status, btn) {
+    if (!a || a.status === "withdrawn" || (a.status !== "pending" && a.status !== "shortlisted")) return;
     var f = Data.appFreelancer(a), verb = { accepted: "Hire", rejected: "Decline", shortlisted: "Shortlist" }[status];
     var go = function () {
       UI.busy(btn, Api.applications.updateStatus(a.id, status).then(function () { a.status = status; UI.toast(f.name + " — " + { accepted: "hired", rejected: "declined", shortlisted: "shortlisted" }[status] + ".", "success"); render(); })).catch(function (e) { UI.toast(e.isNetwork ? "Can't reach the server. Status was not changed." : e.message, "error"); });

@@ -14,7 +14,7 @@
       var projects = [], apps = [], pTotal = 0;
       var pOk = r[0].status === "fulfilled", aOk = r[1].status === "fulfilled";
       if (pOk) { var pl = Api.asList(r[0].value); projects = pl.items; pTotal = pl.total; }
-      if (aOk) apps = Api.asList(r[1].value).items;
+      if (aOk) apps = Api.asList(r[1].value).items.filter(function (a) { return a.status !== "withdrawn"; });
 
       if (pOk && aOk) {
         var by = Data.byStatus(apps);
@@ -52,7 +52,7 @@
   }
 
   function renderProjects(projects, apps) {
-    var counts = {}; apps.forEach(function (a) { var id = Data.appProject(a).id; counts[id] = (counts[id] || 0) + 1; });
+    var counts = {}; apps.forEach(function (a) { if (a.status === "withdrawn") return; var id = Data.appProject(a).id; counts[id] = (counts[id] || 0) + 1; });
     $("projTable").removeAttribute("aria-busy");
     $("projTable").innerHTML = '<div class="table-wrap dash-table-wrap"><table class="table"><thead><tr><th>Project</th><th>Status</th><th>Applicants</th><th>Budget</th><th>Posted</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody>' +
       projects.slice(0, 6).map(function (p) {
