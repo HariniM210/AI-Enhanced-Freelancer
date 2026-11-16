@@ -1,0 +1,27 @@
+# ---------- Web framework ----------
+fastapi==0.162.4
+uvicorn[standard]==0.54.0
+
+# ---------- Database ----------
+pymongo[srv]==4.19.0
+
+# ---------- Configuration ----------
+python-dotenv==1.2.4
+
+# ---------- Machine learning ----------
+pandas==3.1.1
+numpy==2.4.6
+scikit-learn==1.9.1
+joblib==1.6.0
+
+# ---------- Generative AI ----------
+google-genai==3.1.0
+
+# ---------- Authentication ----------
+PyJWT==2.15.1
+bcrypt==5.0.0
+
+# ---------- Tests ----------
+pytest==9.2.0
+httpx==0.28.1
+mongomock==4.3.0

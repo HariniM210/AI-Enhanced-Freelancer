@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create your account · Craftline</title>
+  <meta name="description" content="Craftline — an AI-enhanced freelance marketplace.">
+  <meta name="theme-color" content="#13202f">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+</head>
+<body data-access="guest" data-title="Create your account" class="">
+<main id="main" class="auth">
+  <aside class="auth-aside">
+    <a class="brand" href="index.html"><span class="brand-mark" data-icon="layers-2" data-size="16"></span>Craftline</a>
+    <div><h2 id="asideTitle"></h2><ul id="asideList"></ul></div>
+    <p class="quote">Clear briefs, clear fit, clear next steps.<small>What Craftline is built around</small></p>
+  </aside>
+  <div class="auth-main"><div class="auth-card">
+    <div class="segmented" id="roleSwitch" role="group" aria-label="Account type" style="margin-bottom:24px"><button type="button" data-role="freelancer" aria-pressed="true" data-icon="user">I'm a freelancer</button><button type="button" data-role="client" aria-pressed="false" data-icon="building-2">I'm hiring</button></div>
+    <h1 id="regHeading"></h1><p id="regSub"></p>
+    <form id="registerForm" novalidate>
+      <div class="field"><label for="name">Full name</label><input class="input" id="name" name="name" autocomplete="name" placeholder="Aarav Sharma"></div>
+      <div class="field"><label for="email">Email</label><input class="input" id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com"></div>
+      <div data-for="freelancer"><div class="form-row"><div class="field"><label for="headline">Professional title</label><input class="input" id="headline" name="headline" placeholder="Full-stack developer"></div><div class="field"><label for="years_experience">Years of experience</label><input class="input num" id="years_experience" name="years_experience" type="number" min="0" max="60" placeholder="3"></div></div></div>
+      <div data-for="client" hidden><div class="field"><label for="company_name">Company or organisation</label><input class="input" id="company_name" name="company_name" autocomplete="organization" placeholder="Northwind Logistics"></div></div>
+      <div class="form-row"><div class="field"><label for="password">Password</label><div class="input-group"><input class="input" style="padding-left:12px" id="password" name="password" type="password" autocomplete="new-password" placeholder="8+ characters"><button type="button" class="btn btn-ghost btn-icon btn-sm reveal" data-reveal="password" aria-label="Show password" data-icon="eye" data-size="18"></button></div><span class="hint">Letters and numbers, 8+ characters.</span></div>
+        <div class="field"><label for="confirm">Confirm password</label><input class="input" id="confirm" name="confirm" type="password" autocomplete="new-password"></div></div>
+      <div class="field"><label class="check"><input type="checkbox" name="terms"><span>I agree to use Craftline responsibly and understand AI-generated content should be reviewed before use.</span></label></div>
+      <button class="btn btn-primary btn-block btn-lg" type="submit">Create account</button>
+    </form>
+    <div class="auth-links">Already have an account? <a href="login.html">Sign in</a></div>
+  </div></div>
+</main>
+  <script src="js/config.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js?v=2"></script>
+  <script src="js/boot.js" data-scripts="auth.js"></script>
+</body>
+</html>

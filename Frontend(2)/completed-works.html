@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Completed works · Craftline</title>
+  <meta name="description" content="Craftline — an AI-enhanced freelance marketplace.">
+  <meta name="theme-color" content="#13202f">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/completed-works.css">
+</head>
+<body data-access="freelancer" data-title="Completed works" class="completed-works-page">
+<main id="main" class="completed-works">
+  <header class="cw-head">
+    <div class="cw-head-main">
+      <span class="cw-head-icon" aria-hidden="true" data-icon="folder-check" data-size="24"></span>
+      <div class="cw-head-copy">
+        <div class="eyebrow">Freelancer portfolio</div>
+        <h1>Completed works</h1>
+        <p>Track active engagements, showcase delivered projects, and keep your client reputation up to date.</p>
+      </div>
+    </div>
+    <div class="cw-head-actions">
+      <a class="btn btn-secondary" href="applications.html" data-icon="file-text">All applications</a>
+    </div>
+  </header>
+
+  <div class="grid cols-4 cw-stats" id="kpis"></div>
+
+  <section class="cw-section" aria-labelledby="activeTitle">
+    <div class="cw-section-head">
+      <div>
+        <h2 id="activeTitle">In progress</h2>
+        <p>Active engagements you're delivering now.</p>
+      </div>
+      <span class="cw-count" id="activeCount" aria-live="polite">—</span>
+    </div>
+    <div id="active" class="cw-card-grid cw-active-grid"></div>
+  </section>
+
+  <section class="cw-section" aria-labelledby="doneTitle">
+    <div class="cw-section-head">
+      <div>
+        <h2 id="doneTitle">Delivered</h2>
+        <p>Completed projects, client feedback and the value you've earned.</p>
+      </div>
+      <span class="cw-count" id="doneCount" aria-live="polite">—</span>
+    </div>
+    <div id="done" class="cw-card-grid cw-done-grid"></div>
+  </section>
+</main>
+  <script src="js/config.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js?v=2"></script>
+  <script src="js/boot.js" data-scripts="data.js,completed-works.js"></script>
+</body>
+</html>

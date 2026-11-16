@@ -1,0 +1,71 @@
+{
+  "dataset_name": "synthetic_freelancer_project_matches",
+  "synthetic": true,
+  "seed": 42,
+  "rows": 1500,
+  "feature_columns": [
+    "skills_match_percentage",
+    "required_technology_match",
+    "category_relevance",
+    "years_experience",
+    "experience_level_compatibility",
+    "avg_rating",
+    "portfolio_evidence",
+    "work_history_evidence"
+  ],
+  "label_column": "label",
+  "labels": [
+    "Strong Match",
+    "Moderate Match",
+    "Low Match"
+  ],
+  "label_distribution": {
+    "Strong Match": 643,
+    "Moderate Match": 712,
+    "Low Match": 145
+  },
+  "feature_ranges": {
+    "skills_match_percentage": {
+      "min": 0.0,
+      "max": 100.0,
+      "mean": 55.5532
+    },
+    "required_technology_match": {
+      "min": 0.0,
+      "max": 100.0,
+      "mean": 89.9371
+    },
+    "category_relevance": {
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.9449
+    },
+    "years_experience": {
+      "min": 0.0,
+      "max": 23.0,
+      "mean": 7.9347
+    },
+    "experience_level_compatibility": {
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.5403
+    },
+    "avg_rating": {
+      "min": 0.0,
+      "max": 5.0,
+      "mean": 2.8959
+    },
+    "portfolio_evidence": {
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.6917
+    },
+    "work_history_evidence": {
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.5693
+    }
+  },
+  "duplicate_feature_vectors": 0,
+  "disclaimer": "Synthetic data only. Metrics on this dataset do not establish real-world matching accuracy."
+}

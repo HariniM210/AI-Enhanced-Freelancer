@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard · Craftline</title>
+  <meta name="description" content="Craftline — an AI-enhanced freelance marketplace.">
+  <meta name="theme-color" content="#13202f">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+</head>
+<body data-access="freelancer" data-title="Dashboard" class="">
+<main id="main">
+  <section class="welcome"><div class="grow"><h1 id="hello">Welcome</h1><p id="heroSub">Loading your activity…</p></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;position:relative"><a class="btn btn-primary" href="projects.html" data-icon="search">Browse projects</a><a class="btn btn-ghost" href="ai-proposal.html" data-icon="wand-sparkles">Generate a proposal</a></div></section>
+  <div class="grid cols-4" id="statRow" style="margin-bottom:20px"></div>
+  <div class="grid split-wide">
+    <div class="stack">
+      <section class="panel"><div class="panel-head"><div><h3><span data-icon="compass" data-size="18"></span>Recommended for you</h3><div class="tiny muted" style="margin-top:2px">Open projects, ordered by skill overlap with your profile</div></div><a class="btn btn-ghost btn-sm" href="projects.html">See all</a></div><div id="recs"></div></section>
+      <section class="panel"><div class="panel-head"><h3><span data-icon="clock" data-size="18"></span>Recent application activity</h3><a class="btn btn-ghost btn-sm" href="applications.html">All applications</a></div><div id="activity"></div></section>
+    </div>
+    <div class="stack">
+      <section class="panel panel-body"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>Profile completion</h3><span class="num" style="font:500 1.5rem var(--font-display)" id="pcScore">—</span></div><div class="progress" style="margin:12px 0 14px"><i id="pcBar" style="width:0"></i></div>
+        <ul class="check-list" id="pcList"></ul><div class="divider"></div><div id="pcRating"></div><a class="btn btn-secondary btn-sm btn-block" style="margin-top:14px" href="profile.html">Update profile</a></section>
+      <section class="panel panel-body"><h3 style="margin-bottom:14px">Application status</h3><div class="stack-bar" id="statusBar"></div><div class="legend" style="margin-top:12px" id="statusLegend"></div></section>
+      <section class="panel"><div class="panel-head"><h3><span data-icon="sparkles" data-size="18"></span>AI tools</h3></div>
+        <ul class="list"><li><span class="avatar sm c3" data-icon="wand-sparkles"></span><div class="grow"><a class="title" href="ai-proposal.html">Proposal generator</a><span class="small muted">Draft a tailored proposal</span></div><span data-icon="chevron-right"></span></li>
+        <li><span class="avatar sm c4" data-icon="pen-line"></span><div class="grow"><a class="title" href="ai-summary.html">Profile summary</a><span class="small muted">Write your About section</span></div><span data-icon="chevron-right"></span></li></ul></section>
+      <section class="panel"><div class="panel-head"><h3><span data-icon="folder-check" data-size="18"></span>Completed works</h3><a class="btn btn-ghost btn-sm" href="completed-works.html">View</a></div><div id="doneList"></div></section>
+    </div>
+  </div>
+</main>
+  <script src="js/config.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js?v=2"></script>
+  <script src="js/boot.js" data-scripts="data.js,dash-freelancer.js"></script>
+</body>
+</html>

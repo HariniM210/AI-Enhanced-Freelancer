@@ -1,0 +1,189 @@
+{
+  "model_version": "phase5-rf-v1",
+  "model_type": "RandomForestClassifier",
+  "trained_at": "2026-11-12T15:26:37.052943+00:00",
+  "sklearn_version": "1.9.1",
+  "dataset": {
+    "path": "ML/dataset/synthetic_freelancer_project_matches.csv",
+    "rows": 1500,
+    "feature_columns": [
+      "skills_match_percentage",
+      "required_technology_match",
+      "category_relevance",
+      "years_experience",
+      "experience_level_compatibility",
+      "avg_rating",
+      "portfolio_evidence",
+      "work_history_evidence"
+    ],
+    "labels": [
+      "Strong Match",
+      "Moderate Match",
+      "Low Match"
+    ],
+    "label_distribution": {
+      "Strong Match": 643,
+      "Moderate Match": 712,
+      "Low Match": 145
+    },
+    "synthetic": true
+  },
+  "split": {
+    "test_size": 0.2,
+    "random_state": 42,
+    "train_rows": 1200,
+    "test_rows": 300,
+    "stratified": true
+  },
+  "metrics": {
+    "accuracy": 0.896667,
+    "precision_macro": 0.879191,
+    "recall_macro": 0.878894,
+    "f1_macro": 0.879034,
+    "precision_weighted": 0.896779,
+    "recall_weighted": 0.896667,
+    "f1_weighted": 0.896712,
+    "per_class": {
+      "Strong Match": {
+        "precision": 0.921875,
+        "recall": 0.914729,
+        "f1": 0.918288,
+        "support": 129
+      },
+      "Moderate Match": {
+        "precision": 0.888112,
+        "recall": 0.894366,
+        "f1": 0.891228,
+        "support": 142
+      },
+      "Low Match": {
+        "precision": 0.827586,
+        "recall": 0.827586,
+        "f1": 0.827586,
+        "support": 29
+      }
+    },
+    "confusion_matrix": [
+      [
+        118,
+        11,
+        0
+      ],
+      [
+        10,
+        127,
+        5
+      ],
+      [
+        0,
+        5,
+        24
+      ]
+    ],
+    "classification_report": {
+      "Strong Match": {
+        "precision": 0.921875,
+        "recall": 0.9147286821705426,
+        "f1-score": 0.9182879377431906,
+        "support": 129.0
+      },
+      "Moderate Match": {
+        "precision": 0.8881118881118881,
+        "recall": 0.8943661971830986,
+        "f1-score": 0.8912280701754386,
+        "support": 142.0
+      },
+      "Low Match": {
+        "precision": 0.8275862068965517,
+        "recall": 0.8275862068965517,
+        "f1-score": 0.8275862068965517,
+        "support": 29.0
+      },
+      "accuracy": 0.8966666666666666,
+      "macro avg": {
+        "precision": 0.87919103166948,
+        "recall": 0.878893695416731,
+        "f1-score": 0.8790340716050603,
+        "support": 300.0
+      },
+      "weighted avg": {
+        "precision": 0.8967792103729604,
+        "recall": 0.8966666666666666,
+        "f1-score": 0.8967117664459462,
+        "support": 300.0
+      }
+    }
+  },
+  "cross_validation": {
+    "accuracy": {
+      "mean": 0.910833,
+      "std": 0.02118,
+      "folds": [
+        0.895833,
+        0.895833,
+        0.925,
+        0.891667,
+        0.945833
+      ]
+    },
+    "precision_macro": {
+      "mean": 0.888873,
+      "std": 0.039251,
+      "folds": [
+        0.866091,
+        0.837343,
+        0.947474,
+        0.874688,
+        0.918767
+      ]
+    },
+    "recall_macro": {
+      "mean": 0.900615,
+      "std": 0.032737,
+      "folds": [
+        0.867495,
+        0.890321,
+        0.909539,
+        0.87614,
+        0.95958
+      ]
+    },
+    "f1_macro": {
+      "mean": 0.892332,
+      "std": 0.032397,
+      "folds": [
+        0.86647,
+        0.857987,
+        0.926445,
+        0.874598,
+        0.936163
+      ]
+    }
+  },
+  "feature_importances": {
+    "skills_match_percentage": 0.358547,
+    "required_technology_match": 0.232392,
+    "years_experience": 0.121139,
+    "avg_rating": 0.113469,
+    "category_relevance": 0.077134,
+    "experience_level_compatibility": 0.051868,
+    "work_history_evidence": 0.023009,
+    "portfolio_evidence": 0.022441
+  },
+  "rubric": {
+    "weights": {
+      "skills_match_percentage": 0.3,
+      "required_technology_match": 0.2,
+      "category_relevance": 0.15,
+      "years_experience": 0.1,
+      "experience_level_compatibility": 0.1,
+      "avg_rating": 0.1,
+      "portfolio_evidence": 0.03,
+      "work_history_evidence": 0.02
+    },
+    "strong_threshold": 75.0,
+    "moderate_threshold": 50.0,
+    "label_rule": "Strong if score >= 75; Moderate if 50 <= score < 75; otherwise Low."
+  },
+  "disclaimer": "The dataset is synthetic. These metrics measure performance on synthetic rubric-generated labels and do not establish real-world freelancer-project matching accuracy."
+}

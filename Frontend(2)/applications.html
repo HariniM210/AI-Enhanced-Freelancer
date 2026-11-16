@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My applications · Craftline</title>
+  <meta name="description" content="Craftline — an AI-enhanced freelance marketplace.">
+  <meta name="theme-color" content="#13202f">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+</head>
+<body data-access="freelancer" data-title="My applications" class="">
+<main id="main"><div class="page-head"><div><h1>My applications</h1><p>Track every proposal you've sent and see how clients respond.</p></div><div class="actions"><a class="btn btn-primary" href="projects.html" data-icon="search">Find projects</a></div></div>
+  <section class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-right:16px"><div class="tabs" id="tabs" role="tablist" style="border:0;flex:1"></div><div class="input-group" style="width:240px;margin:8px 0"><span data-icon="search" data-size="16"></span><input class="input" id="q" type="search" placeholder="Search applications" style="height:36px" aria-label="Search applications"></div></div><div style="border-top:1px solid var(--line)" id="table"></div></section>
+</main>
+  <script src="js/config.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js?v=2"></script>
+  <script src="js/boot.js" data-scripts="data.js,applications.js"></script>
+</body>
+</html>

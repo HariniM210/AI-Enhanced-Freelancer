@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proposal generator · Craftline</title>
+  <meta name="description" content="Craftline — an AI-enhanced freelance marketplace.">
+  <meta name="theme-color" content="#13202f">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+</head>
+<body data-access="freelancer" data-title="Proposal generator" data-mode="proposal" class="">
+<main id="main"><div class="page-head"><div><h1>Proposal generator</h1><p>Draft a tailored proposal from your profile and a project's brief. Edit it, then send it with your application.</p></div><div class="actions"><a class="btn btn-secondary" href="projects.html" data-icon="search">Browse projects</a></div></div>
+  <div class="workspace"><div class="stack">
+    <form class="panel" id="aiForm" novalidate><div class="panel-head"><h3><span data-icon="wand-sparkles" data-size="18"></span>Inputs</h3></div><div class="panel-body">
+      <div class="field"><label for="project_id">Project</label><select class="select" id="project_id" name="project_id"><option value="">Loading projects…</option></select><span class="hint" id="projectHint">The proposal is written for this project and your profile.</span></div>
+      <div class="field"><label for="highlights">What should the proposal emphasise? <span class="opt">(optional)</span></label><textarea class="textarea" id="highlights" name="highlights" rows="4" placeholder="e.g. Shipped two FastAPI + MongoDB products; comfortable owning delivery end to end"></textarea></div>
+      <div class="form-row"><div class="field"><label for="tone">Tone</label><select class="select" id="tone" name="tone"></select></div><div class="field"><label for="length">Length</label><select class="select" id="length" name="length"><option value="short">Short</option><option value="medium" selected>Medium</option><option value="detailed">Detailed</option></select></div></div>
+      <div class="form-row"><div class="field"><label for="bid_amount">Your bid <span class="opt">(optional)</span></label><input class="input num" id="bid_amount" name="bid_amount" type="number" min="1" step="any"></div><div class="field"><label for="delivery_days">Delivery days <span class="opt">(optional)</span></label><input class="input num" id="delivery_days" name="delivery_days" type="number" min="1"></div></div>
+      <button class="btn btn-primary btn-block btn-lg" type="submit" data-icon="sparkles">Generate proposal</button></div></form>
+    <section class="panel"><div class="panel-head"><h3><span data-icon="save" data-size="18"></span>Saved drafts</h3></div><div class="panel-body"><div class="saved-list" id="drafts"></div></div></section></div>
+    <section class="panel editor" aria-live="polite">
+      <div class="editor-bar"><b>Draft</b><span class="sp"></span>
+        <button class="btn btn-ghost btn-sm" id="regenBtn" type="button" data-needs-draft data-icon="refresh-cw">Regenerate</button>
+        <button class="btn btn-secondary btn-sm" id="copyBtn" type="button" data-needs-draft data-icon="copy">Copy</button>
+        <button class="btn btn-secondary btn-sm" id="saveDraftBtn" type="button" data-needs-draft data-icon="save">Save draft</button>
+        <button class="btn btn-primary btn-sm" id="primaryBtn" type="button" data-needs-draft data-icon="send">Use in application</button></div>
+      <div id="emptyState" class="state" style="padding:96px 24px"><div class="state-ico" data-icon="sparkles" data-size="22"></div><h3>Your proposal will appear here</h3><p>Choose a project and generate a first draft. You can edit every word before using it.</p></div>
+      <div id="loadingState" class="skel-block" hidden style="padding:32px 28px"><p class="small muted" style="display:flex;gap:8px;align-items:center;margin-bottom:16px"><span class="spin" data-icon="loader-circle" data-size="16"></span>Writing your draft — this can take up to a minute.</p><div class="skel skel-line w80"></div><div class="skel skel-line"></div><div class="skel skel-line w60"></div><div class="skel skel-line"></div><div class="skel skel-line w40"></div></div>
+      <div id="errorState" hidden></div>
+      <div id="editorWrap" hidden><textarea id="draft" aria-label="Generated draft — editable" spellcheck="true"></textarea><div class="editor-foot"><span id="wc"></span><span>AI output can contain errors — review before use.</span></div></div>
+    </section>
+  </div>
+</main>
+  <script src="js/config.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js?v=2"></script>
+  <script src="js/boot.js" data-scripts="ai-workspace.js"></script>
+</body>
+</html>

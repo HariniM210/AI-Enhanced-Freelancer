@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · Craftline</title>
+  <meta name="description" content="Craftline — an AI-enhanced freelance marketplace.">
+  <meta name="theme-color" content="#13202f">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body data-access="guest" data-title="Sign in" class="">
+<main id="main" class="auth auth-login">
+  <aside class="auth-aside">
+    <a class="brand" href="index.html"><span class="brand-mark" data-icon="layers-2" data-size="16"></span>Craftline</a>
+    <div class="auth-aside-body">
+      <h2>Welcome back to your workspace.</h2>
+      <ul>
+        <li data-icon="check" data-size="18"><span>Pick up applications and hiring where you left off</span></li>
+        <li data-icon="check" data-size="18"><span>Review match predictions for new applicants</span></li>
+        <li data-icon="check" data-size="18"><span>Draft proposals and profile summaries with AI</span></li>
+      </ul>
+    </div>
+    <p class="quote">The best part is not guessing whether a project is worth applying to.<small>Early user feedback</small></p>
+  </aside>
+  <div class="auth-main">
+    <div class="auth-card">
+      <h1>Sign in</h1>
+      <p>Use the email and password you registered with.</p>
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <div class="input-group">
+            <span class="input-icon" data-icon="mail" data-size="18" aria-hidden="true"></span>
+            <input class="input" id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com">
+          </div>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-group has-reveal">
+            <span class="input-icon" data-icon="lock" data-size="18" aria-hidden="true"></span>
+            <input class="input" id="password" name="password" type="password" autocomplete="current-password" placeholder="Your password">
+            <button type="button" class="btn btn-ghost btn-icon btn-sm reveal" data-reveal="password" aria-label="Show password" data-icon="eye" data-size="18"></button>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-block btn-lg" type="submit">Sign in</button>
+      </form>
+      <div class="auth-links">New to Craftline? <a href="register.html?role=freelancer">Join as a freelancer</a> or <a href="register.html?role=client">hire talent</a>.</div>
+      <div class="auth-links"><a href="index.html">&larr; Back to home</a></div>
+    </div>
+  </div>
+</main>
+  <script src="js/config.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js?v=2"></script>
+  <script src="js/boot.js" data-scripts="auth.js"></script>
+</body>
+</html>

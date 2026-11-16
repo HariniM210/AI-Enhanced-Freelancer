@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard · Craftline</title>
+  <meta name="description" content="Craftline — an AI-enhanced freelance marketplace.">
+  <meta name="theme-color" content="#13202f">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/client-dashboard.css">
+</head>
+<body data-access="client" data-title="Dashboard" class="dashboard-page">
+<main id="main" class="client-dashboard">
+  <section class="welcome">
+    <div class="grow">
+      <h1 id="hello">Welcome</h1>
+      <p id="heroSub">Loading your hiring activity…</p>
+    </div>
+    <div class="welcome-actions">
+      <a class="btn btn-primary" href="post-project.html" data-icon="plus">Post a project</a>
+      <a class="btn btn-ghost" href="applicants.html" data-icon="users">Review applicants</a>
+    </div>
+  </section>
+
+  <div class="grid cols-4 dash-stats" id="statRow"></div>
+
+  <div class="dash-grid">
+    <div class="dash-main">
+      <section class="panel dash-projects">
+        <div class="panel-head">
+          <h3><span data-icon="briefcase" data-size="18"></span>Recently posted projects</h3>
+          <a class="btn btn-ghost btn-sm" href="projects.html?mine=1">Manage all</a>
+        </div>
+        <div id="projTable"></div>
+      </section>
+    </div>
+
+    <aside class="dash-rail" aria-label="Hiring overview">
+      <section class="panel panel-body dash-pipeline">
+        <h3>Hiring pipeline</h3>
+        <div class="match-bars" id="pipeline"></div>
+        <a class="btn btn-secondary btn-sm btn-block pipeline-link" href="hiring.html" data-icon="handshake">Hiring &amp; tracking</a>
+      </section>
+
+      <section class="panel dash-talent">
+        <div class="panel-head">
+          <h3><span data-icon="users" data-size="18"></span>Top-rated freelancers</h3>
+        </div>
+        <div id="talent"></div>
+      </section>
+    </aside>
+  </div>
+
+  <section class="panel dash-applicants">
+    <div class="panel-head">
+      <div>
+        <h3><span data-icon="brain-circuit" data-size="18"></span>Applicants &amp; ML match results</h3>
+        <div class="panel-sub tiny muted">Latest applicants awaiting a decision</div>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="applicants.html">All applicants</a>
+    </div>
+    <div id="topApplicants"></div>
+  </section>
+</main>
+  <script src="js/config.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js?v=2"></script>
+  <script src="js/boot.js" data-scripts="data.js,dash-client.js"></script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+/* ==========================================================================
+   Client dashboard: main project area, hiring rail, stats, and applicants.
+   Scoped to the dashboard page so shared components stay unchanged.
+   ========================================================================== */
+
+.dashboard-page .content {
+  max-width: 1440px;
+}
+
+.client-dashboard {
+  min-width: 0;
+}
+
+.client-dashboard .welcome {
+  margin-bottom: 20px;
+}
+
+.client-dashboard .welcome-actions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Statistics */
+.dash-stats {
+  margin-bottom: 20px;
+}
+
+.dash-stats .stat {
+  display: flex;
+  flex-direction: column;
+  min-height: 126px;
+}
+
+.dash-stats .stat .k .ico {
+  color: var(--primary);
+}
+
+.dash-stats .stat .s {
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+/* Main column + right rail */
+.dash-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 340px);
+  gap: 20px;
+  align-items: start;
+}
+
+.dash-main,
+.dash-rail {
+  min-width: 0;
+}
+
+.dash-rail {
+  display: grid;
+  gap: 20px;
+  align-content: start;
+}
+
+/* Project table */
+.dash-projects .table-wrap {
+  overflow-x: auto;
+}
+
+.dash-projects table.table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.dash-projects .table th,
+.dash-projects .table td {
+  padding: 14px 8px;
+}
+
+.dash-projects .table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  white-space: normal;
+}
+
+.dash-projects .table th:first-child,
+.dash-projects .table td:first-child {
+  padding-left: 20px;
+}
+
+.dash-projects .table th:last-child,
+.dash-projects .table td:last-child {
+  padding-right: 20px;
+}
+
+.dash-projects .table th:nth-child(1) { width: 29%; }
+.dash-projects .table th:nth-child(2) { width: 14%; }
+.dash-projects .table th:nth-child(3) { width: 12%; }
+.dash-projects .table th:nth-child(4) { width: 16%; }
+.dash-projects .table th:nth-child(5) { width: 12%; }
+.dash-projects .table th:nth-child(6) { width: 17%; }
+
+.dash-projects .project-cell,
+.dash-projects .cell-user,
+.dash-projects .cell-user > div {
+  min-width: 0;
+}
+
+.dash-projects .cell-user .t a {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow-wrap: anywhere;
+}
+
+.dash-projects .project-category {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-projects .status-cell .badge {
+  padding: 0 6px;
+  font-size: 0.625rem;
+}
+
+.dash-projects .budget-cell,
+.dash-projects .posted-cell {
+  font-size: 0.75rem;
+}
+
+.dash-projects .actions-cell .btn-sm {
+  height: 30px;
+  padding: 0 10px;
+  font-size: 0.75rem;
+}
+
+.dash-pager {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Hiring pipeline */
+.dash-pipeline h3 {
+  margin-bottom: 16px;
+}
+
+.dash-pipeline .match-bars {
+  gap: 10px;
+}
+
+.dash-pipeline .pipeline-row {
+  grid-template-columns: 96px minmax(0, 1fr) 28px;
+}
+
+.dash-pipeline .pipeline-row > span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-pipeline .pipeline-link {
+  margin-top: 18px;
+}
+
+/* Top-rated freelancers */
+.dash-talent .list > li {
+  padding: 14px 20px;
+}
+
+.dash-talent .talent-headline {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-talent .talent-rating {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.dash-talent .state {
+  padding: 32px 20px;
+}
+
+/* Full-width applicants section */
+.dash-applicants {
+  margin-top: 20px;
+  min-width: 0;
+}
+
+.dash-applicants .panel-sub {
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+.dash-applicants .list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 16px 20px 20px;
+}
+
+.dash-applicants .list > li {
+  min-width: 0;
+  align-items: flex-start;
+  padding: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.dash-applicants .list > li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.dash-applicants .list .grow {
+  min-width: 0;
+}
+
+.dash-applicants .applicant-project {
+  display: block;
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-applicants .match-slot {
+  min-height: 26px;
+  margin-top: 10px;
+}
+
+.dash-applicants .applicant-review {
+  flex: none;
+}
+
+.dash-applicants .state {
+  min-height: 180px;
+  justify-content: center;
+  padding: 36px 24px;
+}
+
+/* Tablet: one dashboard column, rail stays side-by-side where space allows */
+@media (max-width: 1260px) {
+  .dash-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 760px) and (max-width: 1260px) {
+  .dash-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile: single-column stacks and table rows become cards */
+@media (max-width: 720px) {
+  .client-dashboard .welcome {
+    padding: 22px;
+  }
+
+  .client-dashboard .welcome-actions {
+    width: 100%;
+  }
+
+  .dash-projects .table-wrap {
+    overflow: visible;
+  }
+
+  .dash-projects table.table {
+    display: block;
+    width: 100%;
+    table-layout: auto;
+  }
+
+  .dash-projects table.table thead {
+    display: none;
+  }
+
+  .dash-projects table.table tbody {
+    display: grid;
+    gap: 12px;
+    padding: 14px 16px 16px;
+  }
+
+  .dash-projects table.table tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+    padding: 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .dash-projects table.table td {
+    display: block;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .dash-projects table.table td:first-child,
+  .dash-projects table.table td:last-child {
+    grid-column: 1 / -1;
+    padding: 0;
+  }
+
+  .dash-projects table.table td[data-label] {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .dash-projects table.table td[data-label]::before {
+    content: attr(data-label);
+    color: var(--muted);
+    font: 600 0.625rem/1.2 var(--font-body);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .dash-projects table.table td:last-child {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2px;
+  }
+
+  .dash-projects .cell-user .t a {
+    display: block;
+    -webkit-line-clamp: unset;
+  }
+
+  .dash-projects .project-category {
+    white-space: normal;
+  }
+
+  .dash-projects .actions-cell .btn-sm {
+    height: 32px;
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .dash-applicants .list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .dash-rail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dash-pipeline .pipeline-row {
+    grid-template-columns: 88px minmax(0, 1fr) 24px;
+  }
+
+  .dash-applicants .list {
+    padding: 14px 16px 16px;
+  }
+}

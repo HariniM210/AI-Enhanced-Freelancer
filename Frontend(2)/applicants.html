@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Applicants · Craftline</title>
+  <meta name="description" content="Craftline — an AI-enhanced freelance marketplace.">
+  <meta name="theme-color" content="#13202f">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+</head>
+<body data-access="client" data-title="Applicants" class="">
+<main id="main"><div class="page-head"><div><h1>Applicants</h1><p>Review proposals, compare match predictions, and decide who to hire.</p></div><div class="actions"><button class="btn btn-secondary" id="analyseAll" data-icon="brain-circuit">Analyse all matches</button></div></div>
+  <div class="proj-select"><label class="sr-only" for="projectSel">Project</label><select class="select" id="projectSel"></select>
+    <div class="input-group" style="flex:1;min-width:200px;max-width:320px"><span data-icon="search" data-size="16"></span><input class="input" id="q" type="search" placeholder="Search name or skill" aria-label="Search applicants"></div>
+    <label class="small" style="display:flex;gap:8px;align-items:center;margin-left:auto">Sort <select class="select" id="sortSel" style="height:40px;width:auto"><option value="recent">Newest</option><option value="bid">Lowest bid</option></select></label></div>
+  <section class="panel"><div class="tabs" id="tabs" role="tablist"></div><div id="list"></div></section>
+</main>
+  <script src="js/config.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js?v=2"></script>
+  <script src="js/boot.js" data-scripts="data.js,applicants.js"></script>
+</body>
+</html>

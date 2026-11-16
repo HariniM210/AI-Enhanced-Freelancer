@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hire and get hired with AI-assisted matching · Craftline</title>
+  <meta name="description" content="Craftline pairs clients and freelancers with machine-learning match scores and AI proposal drafting.">
+  <meta name="theme-color" content="#13202f">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/landing.css">
+</head>
+<body data-access="public" data-title="Hire and get hired with AI-assisted matching" class="">
+<main id="main">
+<section class="hero"><div class="wrap">
+  <div>
+    <span class="eyebrow">AI-enhanced freelance marketplace</span>
+    <h1>Find the right freelancer <em>before</em> the first message.</h1>
+    <p class="lede">Craftline scores every freelancer against every project using skills, experience, ratings and category fit &mdash; then helps freelancers write the proposal that gets read.</p>
+    <div class="actions">
+      <a class="btn btn-primary btn-lg" href="register.html?role=client" data-icon="briefcase" data-size="18">Hire a freelancer</a>
+      <a class="btn btn-secondary btn-lg" href="register.html?role=freelancer" data-icon="arrow-right" data-size="18">Find work</a>
+    </div>
+    <div class="assure"><span data-icon="badge-check">Free to join</span><span data-icon="shield-check">Explainable match scores</span><span data-icon="wand-sparkles">Proposal drafting built in</span></div>
+  </div>
+  <aside class="panel signals" aria-label="How a match is scored">
+    <div class="signals-head"><b>How a match is scored</b><span class="badge" data-icon="brain-circuit">Random Forest</span></div>
+    <ol><li><span class="ico-box" data-icon="target" data-size="18"></span><div><b>Skills match</b><span>Overlap between a freelancer's skills and what the project requires.</span></div></li><li><span class="ico-box" data-icon="briefcase" data-size="18"></span><div><b>Years of experience</b><span>Hands-on time in the field, weighed against project complexity.</span></div></li><li><span class="ico-box" data-icon="layers" data-size="18"></span><div><b>Category relevance</b><span>How closely past work sits within the project's category.</span></div></li><li><span class="ico-box" data-icon="star" data-size="18"></span><div><b>Past project ratings</b><span>What previous clients said after delivery.</span></div></li><li><span class="ico-box" data-icon="award" data-size="18"></span><div><b>Experience level</b><span>Entry, intermediate or expert, compared with the level requested.</span></div></li><li><span class="ico-box" data-icon="code" data-size="18"></span><div><b>Required technologies</b><span>Specific tools and frameworks named in the brief.</span></div></li></ol>
+    <div class="tiers"><span class="badge strong">Strong Match</span><span class="badge moderate">Moderate Match</span><span class="badge low">Low Match</span></div>
+    <div class="signals-note">Predictions for your own projects are calculated by the platform once you sign in.</div>
+  </aside>
+</div></section>
+
+<section class="section alt" id="discover-sec"><div class="wrap">
+  <div class="section-head row"><div><span class="eyebrow">Project discovery</span><h2>Open projects, posted by real clients</h2></div><a class="btn btn-secondary" href="projects.html" data-icon="arrow-right">Browse all projects</a></div>
+  <div class="cats" id="cats" role="group" aria-label="Filter by category"></div>
+  <div id="discover" aria-live="polite"></div>
+</div></section>
+
+<section class="section" id="how"><div class="wrap">
+  <div class="section-head"><span class="eyebrow">How it works</span><h2>From brief to delivery in three steps</h2><p>The same flow works for both sides of the table, so nobody has to guess where things stand.</p></div>
+  <div class="steps-3">
+    <div><div class="n">01</div><h3>Post or build</h3><p>Clients describe the project, budget and required skills. Freelancers build a profile with skills, experience and portfolio.</p></div>
+    <div><div class="n">02</div><h3>See the fit</h3><p>Every application comes with a match prediction &mdash; strong, moderate or low &mdash; and the skills that drive it.</p></div>
+    <div><div class="n">03</div><h3>Hire and deliver</h3><p>Clients shortlist and hire. Both sides track progress until the work is complete and rated.</p></div>
+  </div>
+</div></section>
+
+<section class="ai-band" id="ai"><div class="wrap ai-grid">
+  <div>
+    <span class="eyebrow">Two AI capabilities</span>
+    <h2>Machine learning for matching. Generative AI for writing.</h2>
+    <p>Matching uses a Random Forest classifier trained on freelancer&ndash;project data. Writing help comes from a large language model that reads your profile and the project brief together.</p>
+    <div class="ai-feat">
+      <div><span class="ico-box" data-icon="brain-circuit" data-size="20"></span><p><b>Match prediction</b><span>A clear label, a percentage and the evidence behind it &mdash; skills overlap, experience and relevant technologies.</span></p></div>
+      <div><span class="ico-box" data-icon="wand-sparkles" data-size="20"></span><p><b>Proposal generator</b><span>Draft a tailored proposal for a specific project, then edit, copy or save it before sending.</span></p></div>
+      <div><span class="ico-box" data-icon="pen-line" data-size="20"></span><p><b>Profile summary</b><span>Turn your skills and highlights into a concise summary clients can scan in seconds.</span></p></div>
+    </div>
+  </div>
+  <div>
+    <div class="feature-table" role="table" aria-label="Model inputs and what you see">
+      <div class="h" role="row"><span>Model input</span><span>What you see</span></div>
+      <div role="row"><b>Skills match %</b><span>Matched and missing skills</span></div>
+      <div role="row"><b>Years of experience</b><span>Experience on the match card</span></div>
+      <div role="row"><b>Category relevance</b><span>Category fit score</span></div>
+      <div role="row"><b>Past ratings</b><span>Average client rating</span></div>
+      <div role="row"><b>Experience level</b><span>Entry / Intermediate / Expert</span></div>
+      <div role="row"><b>Required technologies</b><span>Relevant technologies list</span></div>
+    </div>
+    <div class="ai-tier"><span class="badge strong">Strong Match</span><span class="badge moderate">Moderate Match</span><span class="badge low">Low Match</span></div>
+  </div>
+</div></section>
+
+<section class="section"><div class="wrap"><div class="two-way">
+  <div class="way f"><span class="eyebrow">For freelancers</span><h3>Spend less time pitching, more time building</h3>
+    <ul><li data-icon="check">Know your fit before you apply</li><li data-icon="check">Generate a first draft of every proposal</li><li data-icon="check">Keep completed works and ratings in one place</li></ul>
+    <a class="btn btn-primary" href="register.html?role=freelancer">Create a freelancer profile</a></div>
+  <div class="way c"><span class="eyebrow" style="color:var(--accent)">For clients</span><h3>Review fewer proposals, hire with more confidence</h3>
+    <ul><li data-icon="check">Post a project with a clear brief and budget</li><li data-icon="check">Compare applicants by match, not guesswork</li><li data-icon="check">Manage hiring and delivery from one dashboard</li></ul>
+    <a class="btn btn-primary" style="background:var(--accent)" href="register.html?role=client">Post a project</a></div>
+</div></div></section>
+
+<!-- Sample testimonial copy: replace with real customer quotes before launch. -->
+<section class="section alt" id="stories"><div class="wrap">
+  <div class="section-head"><span class="eyebrow">Stories</span><h2>What early users say</h2></div>
+  <div class="voices">
+    <figure class="voice big" style="margin:0"><q>I used to skim forty proposals and trust my gut. Seeing why someone is a strong match &mdash; the actual skills overlap &mdash; cut my review time to an afternoon.</q><footer><span class="avatar c1">PN</span><div><b>Priya Nair</b><span>Product lead, logistics startup</span></div></footer></figure>
+    <div class="col">
+      <figure class="voice" style="margin:0"><q>The proposal draft gets me 80% of the way there. I add the details only I know and send it.</q><footer><span class="avatar c2">DM</span><div><b>Daniel Mwangi</b><span>Backend developer</span></div></footer></figure>
+      <figure class="voice" style="margin:0"><q>Having completed work and ratings on one profile made my first month much easier.</q><footer><span class="avatar c3">SK</span><div><b>Sara Kowalski</b><span>UI/UX designer</span></div></footer></figure>
+    </div>
+  </div>
+</div></section>
+
+<section class="cta-band"><div class="wrap"><h2>Your next project is better with a clear fit.</h2><p>Create a free account and see how matching works on real projects.</p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="btn btn-primary btn-lg" href="register.html?role=client">Hire a freelancer</a><a class="btn btn-secondary btn-lg" href="register.html?role=freelancer">Find work</a></div></div></section>
+
+<footer class="footer"><div class="wrap">
+  <div class="footer-grid">
+    <div><a class="brand" href="index.html"><span class="brand-mark" data-icon="layers-2" data-size="16"></span>Craftline</a><p style="margin-top:14px;max-width:34ch">An AI-enhanced marketplace connecting clients and freelancers through explainable matching.</p></div>
+    <div><h4>Platform</h4><ul><li><a href="projects.html">Browse projects</a></li><li><a href="index.html#how">How it works</a></li><li><a href="index.html#ai">AI matching</a></li></ul></div>
+    <div><h4>Freelancers</h4><ul><li><a href="register.html?role=freelancer">Create profile</a></li><li><a href="login.html">Sign in</a></li></ul></div>
+    <div><h4>Clients</h4><ul><li><a href="register.html?role=client">Post a project</a></li><li><a href="login.html">Sign in</a></li></ul></div>
+  </div>
+  <div class="footer-bot"><span>&copy; 2026 Craftline. AI-Enhanced Freelancer Works Platform.</span><span>Built with HTML, CSS and JavaScript.</span></div>
+</div></footer>
+</main>
+  <script src="js/config.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js?v=2"></script>
+  <script src="js/boot.js" data-scripts="landing.js"></script>
+</body>
+</html>

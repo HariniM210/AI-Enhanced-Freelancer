@@ -1,0 +1,193 @@
+/* ==========================================================================
+   Login page: balanced two-column auth layout and aligned form controls.
+   Scoped to .auth-login so other auth pages keep their existing styles.
+   ========================================================================== */
+
+.auth-login {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow-x: clip;
+}
+
+.auth-login .auth-aside {
+  min-width: 0;
+  padding: clamp(32px, 4vw, 56px);
+}
+
+.auth-login .auth-aside-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: clamp(28px, 6vh, 72px) 0;
+}
+
+.auth-login .auth-aside h2 {
+  max-width: 15ch;
+  font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.auth-login .auth-aside ul {
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.auth-login .auth-aside li {
+  align-items: flex-start;
+  line-height: 1.5;
+}
+
+.auth-login .auth-aside .quote {
+  max-width: 36ch;
+  margin-top: 24px;
+}
+
+.auth-login .auth-main {
+  min-width: 0;
+  padding: clamp(32px, 5vw, 64px) clamp(16px, 4vw, 48px);
+}
+
+.auth-login .auth-card {
+  width: 100%;
+  max-width: 420px;
+  min-width: 0;
+}
+
+.auth-login .auth-card h1 {
+  margin-bottom: 10px;
+  font-size: clamp(1.875rem, 3vw, 2.125rem);
+}
+
+.auth-login .auth-card > p {
+  max-width: 38ch;
+  margin-bottom: 28px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.auth-login .auth-card form {
+  width: 100%;
+}
+
+.auth-login .field {
+  min-width: 0;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.auth-login .field > label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.auth-login .input-group {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.auth-login .input-group .input {
+  width: 100%;
+  min-width: 0;
+  height: 48px;
+  padding-left: 44px;
+  padding-right: 14px;
+  caret-color: var(--primary);
+}
+
+.auth-login .input-group.has-reveal .input {
+  padding-right: 48px;
+}
+
+.auth-login .input-icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--muted);
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: color 0.15s;
+}
+
+.auth-login .input-icon .ico {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.auth-login .input-group:focus-within .input-icon {
+  color: var(--primary);
+}
+
+.auth-login .field.has-error .input-icon {
+  color: var(--danger);
+}
+
+.auth-login .input-group .reveal {
+  top: 50%;
+  right: 6px;
+  width: 36px;
+  height: 36px;
+  transform: translateY(-50%);
+}
+
+.auth-login form .btn-block {
+  height: 48px;
+  margin-top: 4px;
+}
+
+.auth-login .auth-links {
+  margin-top: 24px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.auth-login .auth-links + .auth-links {
+  margin-top: 10px;
+}
+
+.auth-login .auth-links a {
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .auth-login {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .auth-login .auth-aside {
+    display: none;
+  }
+
+  .auth-login .auth-main {
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: clamp(28px, 7vh, 56px) clamp(16px, 5vw, 32px);
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-login .auth-card h1 {
+    font-size: 1.875rem;
+  }
+
+  .auth-login .auth-card > p {
+    margin-bottom: 24px;
+  }
+
+  .auth-login .field {
+    margin-bottom: 18px;
+  }
+}

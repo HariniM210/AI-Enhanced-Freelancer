@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projects · Craftline</title>
+  <meta name="description" content="Craftline — an AI-enhanced freelance marketplace.">
+  <meta name="theme-color" content="#13202f">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/landing.css">
+</head>
+<body data-access="open" data-title="Projects" class="">
+<main id="main" class="wrap-page">
+  <div class="page-head"><div><nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span data-icon="chevron-right" data-size="14"></span><span id="crumbCurrent">Projects</span></nav><h1 id="pageTitle">Find your next project</h1><p id="pageSub">Browse open projects and see how well you match before you apply.</p></div><div class="actions" id="headActions"></div></div>
+  <div class="market">
+    <aside class="panel filters" id="filters" aria-label="Filters">
+      <h3>Filters <button class="btn btn-ghost btn-sm" id="clear" type="button">Clear</button></h3>
+      <div class="field"><label for="fCategory">Category</label><select class="select" id="fCategory"></select></div>
+      <div class="field"><label for="fLevel">Experience level</label><select class="select" id="fLevel"></select></div>
+      <div class="field"><span class="label">Budget range</span><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><input class="input num" id="fMin" type="number" min="0" placeholder="Min" aria-label="Minimum budget"><input class="input num" id="fMax" type="number" min="0" placeholder="Max" aria-label="Maximum budget"></div></div>
+      <div class="field"><span class="label">Skills <span class="opt">(any of)</span></span><div id="fSkills"></div></div>
+      <label class="check"><input type="checkbox" id="fOpen" checked><span>Open projects only</span></label>
+    </aside>
+    <section>
+      <form class="searchbar" id="searchForm" role="search"><div class="input-group"><span data-icon="search" data-size="18"></span><input class="input" id="q" type="search" placeholder="Search by title, skill or keyword" aria-label="Search projects"></div><button class="btn btn-secondary filter-toggle" type="button" id="openFilters" data-icon="sliders-horizontal">Filters</button></form>
+      <div class="result-meta"><span id="count" aria-live="polite"></span><label class="small" style="display:flex;gap:8px;align-items:center">Sort by <select class="select" id="sort" style="height:34px;width:auto"><option value="recent">Most recent</option><option value="budget">Highest budget</option><option value="deadline">Nearest deadline</option></select></label></div>
+      <div id="results" aria-live="polite"></div>
+    </section>
+  </div>
+</main>
+  <script src="js/config.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js?v=2"></script>
+  <script src="js/boot.js" data-scripts="data.js,projects.js"></script>
+</body>
+</html>
