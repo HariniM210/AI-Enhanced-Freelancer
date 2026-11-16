@@ -27,8 +27,9 @@
     host.querySelectorAll("[data-view]").forEach(function (b) { b.addEventListener("click", function () {
       var a = list[+b.dataset.view]; UI.modal({ title: "Your proposal — " + Data.appProject(a).title, wide: true, body: '<div class="prose" style="max-height:50vh;overflow:auto">' + UI.esc(a.cover_letter || a.proposal || "No proposal text was returned.") + "</div>" });
     }); });
-    host.querySelectorAll("[data-withdraw]").forEach(function (b) { b.addEventListener("click", function () {
-      var a = list[+b.dataset.withdraw];
+    /*
+
+      // var a = list[+b.dataset.withdraw];
       UI.confirm({ title: "Withdraw application?", body: "The client will no longer see your proposal for <b>" + UI.esc(Data.appProject(a).title) + "</b>.", confirm: "Withdraw", danger: true }).then(function (ok) {
         if (!ok) return;
         UI.busy(b, Api.applications.withdraw(a.id).then(function () { a.status = "withdrawn"; UI.toast("Application withdrawn.", "success"); render(); })).catch(function (e) { UI.toast(e.isNetwork ? "Can't reach the server. Nothing was changed." : e.message, "error"); });

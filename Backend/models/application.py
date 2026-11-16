@@ -69,11 +69,11 @@ class ApplicationStatusUpdate(BaseModel):
         json_schema_extra={"example": {"status": "accepted", "rating": 5, "review": "Great work!"}},
     )
 
-    status: Literal["shortlisted", "accepted", "rejected", "completed", "withdrawn"] = Field(
+    status: Literal["shortlisted", "accepted", "rejected", "completed"] = Field(
         description=(
             "Use shortlisted to shortlist this applicant, accepted to hire "
             "them, rejected to decline, completed to close out an "
-            "accepted hire, or withdrawn to cancel a pending application."
+            "accepted hire."
         )
     )
     rating: Optional[int] = Field(
