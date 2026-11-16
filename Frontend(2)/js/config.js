@@ -9,7 +9,7 @@
   try { stored = localStorage.getItem("craftline.apiBase"); } catch (e) { /* storage blocked */ }
   window.APP_CONFIG = Object.freeze({
     APP_NAME: "Craftline",
-    API_BASE_URL: (stored || window.__API_BASE_URL__ || "http://127.0.0.1:8000").replace(/\/+$/, ""),
+    API_BASE_URL: (stored || window.__API_BASE_URL__ || "https://craftline-backend.onrender.com").replace(/\/+$/, ""),
     REQUEST_TIMEOUT_MS: 20000,
     AI_TIMEOUT_MS: 90000,
     SESSION_KEY: "craftline.session",
